@@ -7,64 +7,46 @@ write a parser to extract the product list with the following fields from the li
     Free Trial / Demo Request URL
     Support Link URL
 """
-
 import json
 
 
+output = []
+
 with open("Products A-Z _ Product Suites _ Micro Focus _ OpenText.html", "r") as f:
-    def skip_lines(n):
-        for _ in range(n):
-            next(f)
+    text = f.read().split("\n\n\n")[4:-4] # data starts at 4th split, and ends at 4th last split.
 
-    # The product results start at "Results:" and this string only appears once in the file.
-    for line in f:
-        if "Results:" in line:
-            break
-    
-    # get to the information
-    skip_lines(4)
-    
-    for i in range(53): # website says that there are 53 products
-        
-        # Parse product name and demo url:
-        line = f.readline().split() # last element will be the url, everything else is the name of product
-        demo_url = line[-1][1:-1] # slice the first and last character which is < or >
-        line.pop()
-        product_name = " ".join(line)
-
-        # get to desc
-        skip_lines(1)
+    for product in text:
+        product_name = ""
         desc = ""
-        while (True):
-            line = f.readline()
-            if "Get free trial" in line or "Request a demo" in line:
-                break
-            desc += line
-        desc = desc.rstrip() # remove the trailing newlines
-
-
+        free_demo_trial_url = ""
         community_url = ""
         support_url = ""
-        while(True):
-            line = f.readline()
-            if "Community" in line:
-                community_url = line.split()[-1][1:] # remove the first character
-                community_url += f.readline()[:-4] # remove the "> |" part at the end 
-            elif "Support" in line:
-                support_url = line.split()[-1][1:] # remove the first character
-                support_url += f.readline()[:-4] # remove the "> |" part at the end 
-            
-            if community_url != "" and support_url != "":
-                break
 
-        product = {
+        for i, line in enumerate(product.split("\n\n")):
+            if i == 0: # first is always name/url NOTE: it is possible to get the url, but was not specified in the requirements
+                product_name = " ".join(line.split()[:-1]) # last element will be the url, everything else is the name of product
+            elif i == 1: # second is always desc
+                description = line[:]
+            elif "Get free trial" in line:
+                free_demo_trial_url = line.split()[3][1:-1]
+            elif "Request a demo" in line:
+                free_demo_trial_url = "".join(line.split()[3:5])[1:-1]
+            elif "Community" in line or "Support" in line: # community and support always together, so one is redundant
+                tmp = line.split(' |') # furthermore, community is always before support
+                community_url = "".join(tmp[0].split()[1:3])[1:-1] # have to perform surgery to reconnect the links and remove <>
+                support_url = "".join(tmp[1].split()[1:3])[1:-1]
+
+        data_point = {
             "Product Name": product_name,
             "Starting Letter": product_name[0].upper(),
-            "Description": desc,
-            "Demo Request URL": demo_url,
+            "Description": description,
+            "Free Trial / Demo Request URL": free_demo_trial_url,
             "Support Link URL": support_url,
             "Community URL": community_url
         }
-        print(product)
+        output.append(data_point)
 
+json_object = json.dumps(output, indent=4) # convert to json
 
+with open("data.json", "w") as outfile: # create json file for output
+    outfile.write(json_object)
