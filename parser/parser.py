@@ -12,7 +12,7 @@ import json
 
 output = []
 
-with open("Products A-Z _ Product Suites _ Micro Focus _ OpenText.html", "r") as f:
+with open("parser/Products A-Z _ Product Suites _ Micro Focus _ OpenText.html", "r") as f:
     text = f.read().split("\n\n\n")[4:-4] # data starts at 4th split, and ends at 4th last split.
 
     for product in text:
