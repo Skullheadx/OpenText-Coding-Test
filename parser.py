@@ -38,11 +38,13 @@ with open("Products A-Z _ Product Suites _ Micro Focus _ OpenText.html", "r") as
     desc = ""
     while (True):
         line = f.readline()
-        if "Get free trial" in line:
+        if "Get free trial" in line or "Request a demo" in line:
             break
         desc += line
     desc = desc.rstrip() # remove the trailing newlines
     print(desc)
+
+    
 
 
 
