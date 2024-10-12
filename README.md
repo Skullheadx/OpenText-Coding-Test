@@ -1,4 +1,5 @@
 Andrew Montgomery - amontgom@uwaterloo.ca
+
 Code: https://github.com/Skullheadx/OpenText-Coding-Test
 
 # Task 1: Triangle Render
