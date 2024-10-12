@@ -11,17 +11,18 @@ write a parser to extract the product list with the following fields from the li
 import json
 
 
-def parse_product_name_demo_url(l):
-    print(l.split())
-
 with open("Products A-Z _ Product Suites _ Micro Focus _ OpenText.html", "r") as f:
+    def skip_lines(n):
+        for _ in range(n):
+            next(f)
+
     # The product results start at "Results:" and this string only appears once in the file.
     for line in f:
         if "Results:" in line:
             break
     
-    for i in range(4):        
-        print(f.readline())
+    # get to the information
+    skip_lines(4)
     
 
     # Parse product name and demo url:
@@ -31,6 +32,21 @@ with open("Products A-Z _ Product Suites _ Micro Focus _ OpenText.html", "r") as
     product_name = " ".join(line)
     print(product_name)
     print(demo_url)
+
+    # get to desc
+    skip_lines(1)
+    desc = ""
+    while (True):
+        line = f.readline()
+        if "Get free trial" in line:
+            break
+        desc += line
+    desc = desc.rstrip() # remove the trailing newlines
+    print(desc)
+
+
+
+
     
 
 
