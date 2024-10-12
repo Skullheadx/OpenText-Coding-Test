@@ -1,7 +1,5 @@
 Andrew Montgomery - amontgom@uwaterloo.ca
 
-Code: https://github.com/Skullheadx/OpenText-Coding-Test
-
 # Task 1: Triangle Render
 ## Code (Python):
 ```python
@@ -18,13 +16,14 @@ while True:
 	pygame.display.flip() # update the display
 ```
 ## Output:
-![[Pasted image 20241011224504.png]]
+![alt text](<Pasted image 20241011224504.png>)
+
 ## Assumptions made:
 - Triangle is right triangle with right angle on the left
 - Triangle is not filled
 - Triangle is at top left \[(0,0) in Pygame-ce\]
-# Task 2: Parser (Python)
-## Code:
+# Task 2: Parser 
+## Code (Python):
 ```python
 import json
 
