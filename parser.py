@@ -44,7 +44,25 @@ with open("Products A-Z _ Product Suites _ Micro Focus _ OpenText.html", "r") as
     desc = desc.rstrip() # remove the trailing newlines
     print(desc)
 
-    
+
+    community_url = ""
+    support_url = ""
+    while(True):
+        line = f.readline()
+        if "Community" in line:
+            community_url = line.split()[-1][1:] # remove the first character
+            community_url += f.readline()[:-4] # remove the "> |" part at the end 
+        elif "Support" in line:
+            support_url = line.split()[-1][1:] # remove the first character
+            support_url += f.readline()[:-4] # remove the "> |" part at the end 
+        
+        if community_url != "" and support_url != "":
+            break
+
+    print(community_url)
+    print(support_url)
+
+
 
 
 
